@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        /* 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        }
+
+        .login-container h2 {
+            margin-top: 0;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff; /* 로그인 버튼 배경색 */
+            color: #fff; /* 로그인 버튼 텍스트색 */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #0056b3; /* 호버 시 배경색 변경 */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>로그인</h2>
+        <form class="login-form" id="loginForm" action="login_process.php" method="POST">
+            <input type="text" name="username" placeholder="사용자 이름" required>
+            <input type="password" name="password" placeholder="비밀번호" required>
+            <input type="submit" value="로그인">
+        </form>
+    </div>
+
+    <!-- 팝업 -->
+    <div id="welcomePopup" style="display: none;">
+        <div style="background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center;">
+            <div style="background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);">
+                <h3>환영합니다!</h3>
+                <p>로그인 되었습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            // 페이지 새로고침 방지
+            event.preventDefault();
+
+            // 팝업 보이기
+            document.getElementById('welcomePopup').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
