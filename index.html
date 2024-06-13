@@ -24,6 +24,7 @@
             display: flex; /* 아이콘과 로그인 버튼을 오른쪽으로 정렬하기 위해 Flexbox 사용 */
             justify-content: space-between; /* 오른쪽 끝에 정렬 */
             align-items: center; /* 수직 가운데 정렬 */
+            position: relative; /* 말풍선의 절대 위치를 위한 기준 */
         }
 
         .navbar ul {
@@ -59,6 +60,7 @@
         .icon {
             height: 20px;
             margin-right: 10px;
+            cursor: pointer;
         }
 
         /* 로그인 버튼 스타일 */
@@ -75,6 +77,39 @@
         .login-btn:hover {
             background-color: #000; /* 호버 시 검은 배경색으로 변경 */
             color: #fff; /* 호버 시 흰색 텍스트로 변경 */
+        }
+
+        /* 검색 입력 창 스타일 */
+        .search-container {
+            display: none; /* 초기에는 숨김 */
+            position: absolute;
+            top: 60px; /* 네비게이션 바 아래에 위치 */
+            right: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .search-input {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .search-button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #333;
         }
 
         /* 제품 이미지 슬라이더 스타일 */
@@ -165,8 +200,8 @@
 
         /* 푸터 스타일 */
         footer {
-            background-color: #333; /* 어두운 배경색 */
-            color: #fff; /* 흰색 텍스트 */
+            background-color: transparent; /* 어두운 배경색 */
+            color: #333; /* 흰색 텍스트 */
             padding: 20px;
             text-align: center;
             width: 100%;
@@ -174,6 +209,31 @@
             /* bottom: 0; */
             /* 삭제하여 푸터를 고정하지 않음 */
         }
+
+        /* 말풍선 스타일 */
+        .tooltip {
+            display: none; /* 초기에는 숨김 */
+            position: absolute;
+            top: 50px; /* 아이콘 위에 위치 */
+            right: 0;
+            background-color: #333; /* 어두운 배경색 */
+            color: #fff; /* 흰색 텍스트 */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
     </style>
 </head>
 <body>
@@ -181,55 +241,59 @@
         <!-- 네비게이션 바 -->
         <nav class="navbar">
             <ul>
-                <li><a href="#"><img src="C.png" alt="Apple Logo" class="logo"></a></li>
+                <li><a href="#"><img src="C.png" alt="Logo" class="logo"></a></li>
                 <!-- 로고 이미지로 변경 -->
-                <li><a href="#">스토어</a></li>
-                <li><a href="#">Mac</a></li>
-                <li><a href="#">iPad</a></li>
-                <li><a href="#">iPhone</a></li>
-                <li><a href="#">Watch</a></li>
+                <li><a href="#" onclick="showPopup()">Store</a></li>
+                <li><a href="#" onclick="showPopup()">Mac</a></li>
+                <li><a href="#" onclick="showPopup()">iPad</a></li>
+                <li><a href="#" onclick="showPopup()">iPhone</a></li>
+                <li><a href="#" onclick="showPopup()">Watch</a></li>
             </ul>
-            <div>
-                <a href="#"><img src="search.png" alt="Search" class="icon"></a>
+            <div style="position: relative;">
+                <a href="#" onclick="toggleSearch()"><img src="search.png" alt="Search" class="icon"></a>
                 <!-- 검색 아이콘 -->
-                <a href="#"><img src="bag.png" alt="Bag" class="icon"></a>
-                <!-- 쇼핑백 아이콘 -->
-                <a href="login.html" class="login-btn">로그인</a>
+                <a href="#" onclick="toggleCartTooltip()"><img src="bag.png" alt="Bag" class="icon"></a>
+                <!-- 장바구니 아이콘 -->
+                <a href="#" class="login-btn" onclick="showPopup()">로그인</a>
                 <!-- 로그인 버튼 -->
+                <div class="tooltip" id="cart-tooltip">장바구니가 비었습니다.</div>
             </div>
         </nav>
+        <!-- 검색 입력 창 -->
+        <div class="search-container" id="search-container">
+            <input type="text" class="search-input" id="search-input" placeholder="검색어 입력">
+            <button class="search-button" onclick="performSearch()">검색</button>
+        </div>
     </header>
 
-    <main>
-        <!-- 제품 상세 정보 -->
-        <section class="product-details">
-            <h1>41mm Soft Mint Sport Loop</h1>
-            <p>상품 설명: 애플 워치를 위한 스포츠 루프</p>
-            <div class="product-slider">
-                <button class="slider-button prev-button" onclick="prevSlide()">&#10094;</button>
-                <div class="slider-wrapper" id="slider-wrapper">
-                    <img src="스트랩.jfif" alt="41mm Soft Mint Sport Loop" class="slide">
-                    <img src="스트랩2.jfif" alt="41mm Soft Mint Sport Loop 2" class="slide">
-                    <img src="스트랩3.jfif" alt="41mm Soft Mint Sport Loop 3" class="slide">
-                </div>
-                <button class="slider-button next-button" onclick="nextSlide()">&#10095;</button>
+    <main class="product-details">
+        <!-- 제품 이미지 슬라이더 -->
+        <div class="product-slider">
+            <button class="slider-button prev-button" onclick="prevSlide()">&#10094;</button>
+            <div class="slider-wrapper" id="slider-wrapper">
+                <img src="스트랩.jfif" alt="41mm Soft Mint Sport Loop" class="slide">
+                <img src="스트랩2.jfif" alt="41mm Soft Mint Sport Loop 2" class="slide">
+                <img src="스트랩3.jfif" alt="41mm Soft Mint Sport Loop 3" class="slide">
             </div>
-            <div class="color-buttons">
-                <button class="color-button red" onclick="changeColor('red')"></button>
-                <button class="color-button green" onclick="changeColor('green')"></button>
-                <button class="color-button blue" onclick="changeColor('blue')"></button>
-                <button class="color-button black" onclick="changeColor('black')"></button>
-            </div>
-            <div class="product-price">
-                <p>가격: $49.00</p>
-                <button class="add-to-cart-btn">장바구니에 추가</button>
-            </div>
-        </section>
+            <button class="slider-button next-button" onclick="nextSlide()">&#10095;</button>
+        </div>
+        <!-- 컬러 버튼 -->
+        <div class="color-buttons">
+            <button class="color-button red" onclick="changeColor('red')"></button>
+            <button class="color-button green" onclick="changeColor('green')"></button>
+            <button class="color-button blue" onclick="changeColor('blue')"></button>
+            <button class="color-button black" onclick="changeColor('black')"></button>
+        </div>
+        <!-- 제품 가격 및 장바구니 추가 버튼 -->
+        <div class="product-price">
+            <p>가격: ₩65,000</p>
+            <button class="add-to-cart-btn" onclick="addToCart()">장바구니에 추가</button>
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2024 Apple Inc. All rights reserved.</p>
-        <p>문의: support@apple.com | 전화: 123-456-7890</p>
+        <p>&copy; 2024 Capple Inc. All rights reserved.</p>
+        <p>문의: support@capple.com | 전화: 123-456-7890</p>
     </footer>
 
     <script>
@@ -294,6 +358,34 @@
             sliderWrapper.innerHTML = slides;
             currentIndex = 0; // 슬라이드를 첫 번째 이미지로 초기화
             showSlide(currentIndex); // 첫 번째 슬라이드 표시
+        }
+
+        function showPopup() {
+            alert('죄송합니다. 페이지가 준비 중입니다.');
+        }
+
+        function toggleSearch() {
+            const searchContainer = document.getElementById('search-container');
+            searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('search-input').value;
+            if (searchInput) {
+                alert(`검색어: ${searchInput}`);
+                // 실제 검색 기능을 구현하려면 여기에 추가
+            } else {
+                alert('검색어를 입력하세요.');
+            }
+        }
+
+        function addToCart() {
+            alert('해당 상품은 품절입니다.');
+        }
+
+        function toggleCartTooltip() {
+            const tooltip = document.getElementById('cart-tooltip');
+            tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 </body>
